@@ -26,7 +26,7 @@ export const requestConfig = (method, data, token = null, image = null) => {
     }
 
     if(token) {
-        config.headers.Authorizaton = `Bearer ${token}`
+        config.headers.Authorization = `Bearer ${token}`
     }
 
     return config

@@ -17,5 +17,5 @@ export const useAuth = () => {
         setLoading(false)
     }, [user])
 
-    return[ auth, loading ]
+    return { auth, loading }
 }

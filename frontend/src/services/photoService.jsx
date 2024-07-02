@@ -16,11 +16,11 @@ const publishPhoto = async(data, token) => {
 }
 
 // Get user photos
-const getUserphotos = async(id, token) => {
+const getUserPhotos = async(id, token) => {
     const config = requestConfig("GET", null, token)
 
     try {
-        const res = await fetch(api + "/photos/user" + id, config)
+        const res = await fetch(api + "/photos/user/" + id, config)
             .then((res) => res.json())
             .catch((err) => err)
 
@@ -32,7 +32,7 @@ const getUserphotos = async(id, token) => {
 
 const photoService = {
     publishPhoto,
-    getUserphotos,
+    getUserPhotos,
 }
 
 export default photoService

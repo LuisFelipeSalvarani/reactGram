@@ -62,8 +62,10 @@ export const updatePhotos = createAsyncThunk("photo/update", async(photoData, th
 })
 
 // Get photo by id
-export const getPhoto = createAsyncThunk("photo/getphoto", async(id) => {
-    const data = await photoService.getUserPhotos(id)
+export const getPhoto = createAsyncThunk("photo/getphoto", async(id, thunkAPI) => {
+    const token = thunkAPI.getState().auth.user.token
+
+    const data = await photoService.getPhoto(id, token)
 
     return data
 })

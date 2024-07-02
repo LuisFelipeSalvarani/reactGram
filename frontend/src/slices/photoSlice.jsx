@@ -34,10 +34,10 @@ export const getUserPhotos = createAsyncThunk("photo/userphotos", async(id, thun
 })
 
 // Delete a photos
-export const deletePhotos = createAsyncThunk("photo/delete", async(photoData, thunkAPI) => {
+export const deletePhotos = createAsyncThunk("photo/delete", async(id, thunkAPI) => {
     const token = thunkAPI.getState().auth.user.token
 
-    const data = await photoService.updatePhoto({title: photoData.title}, photoData.id, token)
+    const data = await photoService.deletePhoto(id, token)
 
     // Check for errors
     if(data.errors) {
@@ -48,10 +48,10 @@ export const deletePhotos = createAsyncThunk("photo/delete", async(photoData, th
 })
 
 // Update a photo
-export const updatePhotos = createAsyncThunk("photo/update", async(id, thunkAPI) => {
+export const updatePhotos = createAsyncThunk("photo/update", async(photoData, thunkAPI) => {
     const token = thunkAPI.getState().auth.user.token
 
-    const data = await photoService.deletePhoto(id, token)
+    const data = await photoService.updatePhoto({title: photoData.title}, photoData.id, token)
 
     // Check for errors
     if(data.errors) {
@@ -110,7 +110,7 @@ export const photoSlice = createSlice({
         }).addCase(updatePhotos.pending, (state) => {
             state.loading = true
             state.error = null
-        }).addCase(deletePhotos.fulfilled, (state, action) => {
+        }).addCase(updatePhotos.fulfilled, (state, action) => {
             state.loading = false
             state.success = true
             state.error = null

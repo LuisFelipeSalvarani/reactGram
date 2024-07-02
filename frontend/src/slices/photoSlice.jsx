@@ -16,6 +16,7 @@ export const publishPhoto = createAsyncThunk("photo/publish", async(photo, thunk
 
     const data = await photoService.publishPhoto(photo, token)
 
+    // Check for errors
     if(data.errors) {
         return thunkAPI.rejectWithValue(data.errors[0])
     }
@@ -28,6 +29,20 @@ export const getUserPhotos = createAsyncThunk("photo/userphotos", async(id, thun
     const token = thunkAPI.getState().auth.user.token
 
     const data = await photoService.getUserPhotos(id, token)
+
+    return data
+})
+
+// Delete a photos
+export const deletePhotos = createAsyncThunk("photo/delete", async(id, thunkAPI) => {
+    const token = thunkAPI.getState().auth.user.token
+
+    const data = await photoService.deletePhoto(id, token)
+
+    // Check for errors
+    if(data.errors) {
+        return thunkAPI.rejectWithValue(data.errors[0])
+    }
 
     return data
 })
@@ -63,6 +78,21 @@ export const photoSlice = createSlice({
             state.success = true
             state.error = null
             state.photos = action.payload
+        }).addCase(deletePhotos.pending, (state) => {
+            state.loading = true
+            state.error = null
+        }).addCase(deletePhotos.fulfilled, (state, action) => {
+            state.loading = false
+            state.success = true
+            state.error = null
+            state.photos = state.photos.filter((photo) => {
+                return photo._id !== action.payload.id
+            })
+            state.message = action.payload.message
+        }).addCase(deletePhotos.rejected, (state, action) => {
+            state.loading = false
+            state.error = action.payload
+            state.photo = {}
         })
     }
 })
